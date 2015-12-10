@@ -32,13 +32,16 @@ end
 languages_by_key = LocaleChecker::TranslationFinder.new(path).languages_by_key
 puts
 
-result = 0
-languages_by_key.select do |key, languages|
+error_count = 0
+languages_by_key.sort_by { |key, _| key }.each do |key, languages|
   missing_languages = checked_languages - languages
   if missing_languages.any?
     puts "#{key} is missing #{missing_languages}!"
-    result = -2
+    error_count += 1
   end
 end
 
-exit result
+puts
+puts "Found #{error_count} offending translation keys."
+
+exit error_count
