@@ -3,7 +3,7 @@
 
 $LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
 
-require 'translation_finder'
+require 'locale_checker/translation_finder'
 require 'optparse'
 
 path = nil
@@ -29,7 +29,7 @@ if checked_languages.empty? || path.nil?
   exit -1
 end
 
-languages_by_key = TranslationFinder.new(path).languages_by_key
+languages_by_key = LocaleChecker::TranslationFinder.new(path).languages_by_key
 puts
 
 result = 0
