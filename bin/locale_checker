@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+$LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
+
+require 'translation_finder'
+require 'optparse'
+
+path = nil
+checked_languages = []
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage example: locale_checker -l locale_dir -p de,en-GB"
+
+  opts.on("-p", "--path LOCALE_PATH",
+          "Specify the path of your locale directory") do |p|
+    path = p
+  end
+
+  opts.on("-l", "--languages LANGUAGES", Array,
+          "Languages whoose presence should be verified") do |langs|
+    checked_languages = langs
+  end
+end
+
+parser.parse!
+
+if checked_languages.empty? || path.nil?
+  puts parser
+  exit -1
+end
+
+languages_by_key = TranslationFinder.new(path).languages_by_key
+puts
+
+result = 0
+languages_by_key.select do |key, languages|
+  missing_languages = checked_languages - languages
+  if missing_languages.any?
+    puts "#{key} is missing #{missing_languages}!"
+    result = -2
+  end
+end
+
+exit result
