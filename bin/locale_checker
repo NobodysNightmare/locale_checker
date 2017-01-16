@@ -9,7 +9,7 @@ require 'optparse'
 path = nil
 checked_languages = []
 parser = OptionParser.new do |opts|
-  opts.banner = "Usage example: locale_checker -l locale_dir -p de,en-GB"
+  opts.banner = "Usage example: locale_checker -p locale_dir -l de,en-GB"
 
   opts.on("-p", "--path LOCALE_PATH",
           "Specify the path of your locale directory") do |p|
